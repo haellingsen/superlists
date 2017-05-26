@@ -13,20 +13,34 @@ class newVisitorTest(unittest.TestCase):
 		# åpner nettleseren for å sjekke den ut
 		self.browser.get('http://localhost:8000')
 
-		# Hun legger merke til at header og title nevner todo lister
+		# Hun legger merke til at  title og header nevner todo lister
 		self.assertIn('To-Do', self.browser.title)
-		self.fail('Finish the test!')
+		header_text = 	self.browser.find_element_by_tag_name('h1').text
+		self.assertIn('To-Do', header_text)
 
 		# Hun inviteres til å skrive inn en ting som skal gjøres med det samme
-
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		self.assertEqual(
+			inputbox.get_attribute('placeholder'),
+			'Enter a to-do item'
+		)
 		# Hun skriver inn "Kjøp maggott til Bjerne" i en tekstboks
+		inputbox.send_keys('Kjøp maggott til Bjerne')
 
 		# Når hun trykker enter så oppdateres siden og første oppføring vises:
 		# "1	Kjøp maggott til Bjerne"
+		inputbox.send_keys(Keys.ENTER)
+		time.sleep(1)
+
+		table = self.browser.find_element_by_id('id_list_table')
+		rows = table.find_element_by_tag_name('tr')
+		self.assertTrue(
+			any(row.text == '1: Kjøp maggott til Bjerne')
+			)
 
 		# Ennå en tekstboks inviterer til å legge til enda en oppføring. Hun 
 		# skriver inn "Gi maggott til Bjerne ved neste anledning" og trykker enter.
-
+		self.fail('Finish the test!')
 		# Siden oppdateres igjen og begge oppføringene vises på lista.
 
 		# Trude lurer spent på om denne siden kommer til å huske hennes liste når hun lukker ned.
