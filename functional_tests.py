@@ -49,7 +49,7 @@ class newVisitorTest(unittest.TestCase):
 
         # Siden oppdateres igjen og begge oppføringene vises på lista.
         self.check_for_row_in_list_table('1: Kjøp maggot')
-        self.check_for_row_in_list_table('2: Gi maggott til Bjerne')
+        self.check_for_row_in_list_table('2: Gi maggot til Bjerne')
 
         # Trude lurer spent på om denne siden kommer til å huske hennes liste når hun lukker ned.
         # Hun er observant og legger merke til at siden har genrert en unik URL for henne --
