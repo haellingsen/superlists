@@ -49,7 +49,6 @@ class newVisitorTest(LiveServerTestCase):
         # Når hun trykker enter så oppdateres siden og første oppføring vises:
         # "1    Kjøp maggott til Bjerne"
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
         self.wait_for_row_in_list_table('1: Kjøp maggot')
 
         # Ennå en tekstboks inviterer til å legge til enda en oppføring. Hun 
@@ -57,7 +56,6 @@ class newVisitorTest(LiveServerTestCase):
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys('Gi maggot til Bjerne')
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
 
         # Siden oppdateres igjen og begge oppføringene vises på lista.
         self.wait_for_row_in_list_table('1: Kjøp maggot')
@@ -107,7 +105,7 @@ class newVisitorTest(LiveServerTestCase):
         # Frans får sin egen unike URL
         frans_list_url = self.browser.current_url
         self.assertRegex(frans_list_url, '/lists/.+')
-        self.assertNoEqual(frans_list_url, trude_list_url)
+        self.assertNotEqual(frans_list_url, trude_list_url)
 
         #Til slutt det er ingen spor av Trudes liste
         page_text = self.browser.find_element_by_tag_name('body').text
@@ -115,5 +113,3 @@ class newVisitorTest(LiveServerTestCase):
         self.assertIn('Kjøp melk', page_text)
 
         # Begge fornøyde vender tilbake til søvnriket
-
-        browser.quit()
