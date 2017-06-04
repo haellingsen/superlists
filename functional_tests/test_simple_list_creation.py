@@ -41,7 +41,6 @@ class NewVisitorTest(FunctionalTest):
         # Trude lurer spent på om denne siden kommer til å huske hennes liste når hun lukker ned.
         # Hun er observant og legger merke til at siden har genrert en unik URL for henne --
         # det vises også noe forklarende tekst i forbindelse med lagring og den unike URL
-        self.fail('Finish the test!')
 
         # Hun besøker denne unike URLen - hennes to-do list er der stadig vekk
 
