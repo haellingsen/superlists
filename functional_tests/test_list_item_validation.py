@@ -8,7 +8,7 @@ class ItemValididtyTest(FunctionalTest):
         # Trude prøver ved en feil å sende inn en tom tekst streng. Hun trykker enter
         # i det tomme input feltet.
         self.browser.get(self.live_server_url)
-        self.browser.find_element_by_id('id_new_item').send_keys(Keys.ENTER)
+        self.get_item_input_box().send_keys(Keys.ENTER)
 
         # Hjemmesiden gjeninnlastes og det kommer en feilmelding som sier at feltet ikke kan være blankt.
         self.wait_for(lambda: self.assertEqual(
@@ -17,12 +17,12 @@ class ItemValididtyTest(FunctionalTest):
         ))
 
         # Hun prøver igjen med noe tekst og det fungerer.
-        self.browser.find_element_by_id('id_new_item').send_keys('Kjøp melk')
-        self.browser.find_element_by_id('id_new_item').send_keys(Keys.ENTER)
+        self.get_item_input_box().send_keys('Kjøp melk')
+        self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Kjøp melk')
 
         # Perverst nok prøver hun igjen å sende inn en blank linje
-        self.browser.find_element_by_id('id_new_item').send_keys(Keys.ENTER)
+        self.get_item_input_box().send_keys(Keys.ENTER)
 
         # Hun får på ny lignende feilmelding på liste siden
         self.wait_for(lambda: self.assertEqual(
@@ -31,7 +31,7 @@ class ItemValididtyTest(FunctionalTest):
         ))
 
         # og hun kan korrigere det ved å fylle inn noe tekst
-        self.browser.find_element_by_id('id_new_item').send_keys('Lag te')
-        self.browser.find_element_by_id('id_new_item').send_keys(Keys.ENTER)
+        self.get_item_input_box().send_keys('Lag te')
+        self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Kjøp melk')
         self.wait_for_row_in_list_table('2: Lag te')
