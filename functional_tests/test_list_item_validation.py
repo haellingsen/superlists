@@ -10,28 +10,35 @@ class ItemValididtyTest(FunctionalTest):
         self.browser.get(self.live_server_url)
         self.get_item_input_box().send_keys(Keys.ENTER)
 
-        # Hjemmesiden gjeninnlastes og det kommer en feilmelding som sier at feltet ikke kan være blankt.
-        self.wait_for(lambda: self.assertEqual(
-            self.browser.find_element_by_css_selector('.has-error').text,
-            "You can't have an empty list item"
+        # Browseren blander seg opp i requesten og laster ikke listesiden
+        self.wait_for(lambda: self.browser.find_element_by_css_selector(
+            '#id_text:invalid'
         ))
 
-        # Hun prøver igjen med noe tekst og det fungerer.
+        # Hun prøver igjen, skriver noe tekst i feltet og feilen forsvinner
         self.get_item_input_box().send_keys('Kjøp melk')
+        self.wait_for(lambda: self.browser.find_element_by_css_selector(
+            '#id_text:valid'
+        ))
+
+        # Hun kan nå sende forespørselen
         self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Kjøp melk')
 
         # Perverst nok prøver hun igjen å sende inn en blank linje
         self.get_item_input_box().send_keys(Keys.ENTER)
 
-        # Hun får på ny lignende feilmelding på liste siden
-        self.wait_for(lambda: self.assertEqual(
-            self.browser.find_element_by_css_selector('.has-error').text,
-            "You can't have an empty list item"
+        # Nok en gang vil ikke browseren ha noe med dette å gjøre og viser feilmeldingen
+        self.wait_for_row_in_list_table('1: Kjøp melk')
+        self.wait_for(lambda: self.browser.find_element_by_css_selector(
+            '#id_text:invalid'
         ))
 
         # og hun kan korrigere det ved å fylle inn noe tekst
         self.get_item_input_box().send_keys('Lag te')
+        self.wait_for(lambda: self.browser.find_element_by_css_selector(
+            '#id_text:valid'
+        ))
         self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Kjøp melk')
         self.wait_for_row_in_list_table('2: Lag te')
