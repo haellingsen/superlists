@@ -8,11 +8,10 @@
 		<title>To-Do lists</title>
 		<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 		<link href="/static/base.css" rel="stylesheet">
+		<link rel="shortcut icon" type="image/png" href="{{STATIC_URL}}/favicon.ico"/>
 	</head>
 	<body>
 		<div class="container">
-
-
 			<nav class="navbar navbar-default" role="navigation">
 				<div class="container-fluid">
 					<a class="navbar-brand" href="/">Todo lists</a>
@@ -53,15 +52,17 @@
 				<div class="col-md-6 col-md-offset-3 jumbotron">
 					<div class="text-center">
 						<h1>{% block header_text %}{% endblock %}</h1>
-						<form method="POST" action="{% block form_action %}{% endblock %}">
-							{{ form.text }}
-							{% csrf_token %}
-							{% if form.errors %}
-								<div class="form-group has-error">
-									<span class="help-block">{{ form.text.errors }}</span>
-								</div>
-							{% endif %}
-						</form>
+						{% block list_form %}
+							<form method="POST" action="{% block form_action %}{% endblock %}">
+								{{ form.text }}
+								{% csrf_token %}
+								{% if form.errors %}
+									<div class="form-group has-error">
+										<span class="help-block">{{ form.text.errors }}</span>
+									</div>
+								{% endif %}
+							</form>
+						{% endblock %}
 					</div>
 				</div>
 			</div>
@@ -69,6 +70,13 @@
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3">
 					{% block table %}
+					{% endblock %}
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6 col-md-offset-3">
+					{% block extra_content %}
 					{% endblock %}
 				</div>
 			</div>
