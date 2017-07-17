@@ -5,9 +5,14 @@ Description=Gunicorn server for SITENAME
 Restart=on-failure
 User=ubuntu
 WorkingDirectory=/home/ubuntu/sites/SITENAME/source
-ExecStart=/home/ubuntu/sites/SITENAME/virtualenv/bin/gunicorn \
-    --bind unix:/tmp/SITENAME.socket \
-    superlists.wsgi:application
+Environment=EMAIL_PASSWORD=SEKRIT
+WorkingDirectory=/home/ubuntu/sites/SITENAME/source
+ExecStart=/home/ubuntu/sites/todo-staging.hellingsen.com/virtualenv/bin/gunicorn \
+--bind unix:/tmp/SITENAME.socket \
+--capture-output \
+--access-logfile ../access.log \
+--error-logfile ../error.log \
+superlists.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
