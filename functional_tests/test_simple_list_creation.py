@@ -87,6 +87,4 @@ class NewVisitorTest(FunctionalTest):
         self.assertNotIn('Gi maggot til Bjerne', page_text)
         self.assertIn('Kjøp melk', page_text)
 
-        self.fail()
-
         # Begge fornøyde vender tilbake til søvnriket
