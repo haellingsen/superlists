@@ -1,16 +1,21 @@
-from fabric.api import run
-from fabric.context_managers import settings
-
-def _get_manage_dot_py(host):
-	return '~/sites/%s/virtualenv/bin/python ~/sites/%s/source/manage.py' % (host,host,)
+from os import path
+import subprocess
+THIS_FOLDER = path.dirname(path.abspath(__file__))
 
 def reset_database(host):
-	manage_dot_py = _get_manage_dot_py(host)
-	with settings(host_string='ubuntu@%s' % (host,)):
-		run('%s flush --noinput' % (manage_dot_py,))
+    subprocess.check_call(
+        ['fab', 'reset_database', '--host=ubuntu@{}'.format(host)],
+        cwd=THIS_FOLDER
+    )
+
 
 def create_session_on_server(host, email):
-	manage_dot_py = _get_manage_dot_py(host)
-	with settings(host_string='ubuntu@%s' % (host,)):
-		session_key = run('%s create_session %s' % (manage_dot_py,email,))
-		return session_key.strip()
+    return subprocess.check_output(
+        [
+            'fab',
+            'create_session_on_server:email={}'.format(email),
+            '--host=ubuntu@{}'.format(host),
+            '--hide=everything,status',
+        ],
+        cwd=THIS_FOLDER
+    ).decode().strip()
